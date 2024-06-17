@@ -10,7 +10,7 @@ do
 
   slackmojicurl "add" "mode=alias" "name=$name" "alias_for=$alias_for"
 
-  if [ "$SUCCESS" == "true" ]; then
+  if [[ "$SUCCESS" == "true" ]]; then
     echo "Uploaded successfully: $name"
   fi
 

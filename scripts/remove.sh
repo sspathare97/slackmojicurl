@@ -41,7 +41,7 @@ for emoji_name in "${matching_files[@]}"; do
 
   slackmojicurl "remove" "name=$emoji_name"
 
-  if [ "$SUCCESS" == "true" ]; then
+  if [[ "$SUCCESS" == "true" ]]; then
     echo "Removed successfully: $emoji_name"
   fi
 

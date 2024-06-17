@@ -11,7 +11,7 @@ mkdir -p "$FAILED_DIR"
 
 directory="/path/to/your/directory"
 
-if [ -z "$(ls -A $NEW_DIR)" ]; then
+if [[ -z "$(ls -A $NEW_DIR)" ]]; then
   echo "$NEW_DIR is empty. Nothing to upload!"
   exit 0
 fi
@@ -25,7 +25,7 @@ for file in "$NEW_DIR"/*; do
 
   slackmojicurl "add" "mode=data" "name=$filename_without_extension" "image=@$filepath"
 
-  if [ "$SUCCESS" == "true" ]; then
+  if [[ "$SUCCESS" == "true" ]]; then
     echo "Uploaded successfully: $filename"
     mv $file "$DONE_DIR/$filename"
   else

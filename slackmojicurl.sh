@@ -5,22 +5,22 @@ ENV_FILE="$REPO_ROOT_DIR/.env"
 
 function load_env() {
   # Check whether .env file exists
-  if [ ! -f "$ENV_FILE" ]; then
+  if [[ ! -f "$ENV_FILE" ]]; then
     echo ".env file not found!"
     exit 1
   fi
 
   # Load environment variables from .env file
-  export $(grep -v '^#' "$ENV_FILE" | xargs)
+  source "${ENV_FILE}"
 
   # Check whether environment variables are set
-  if [ -z "$WORKSPACE_URL" ] || [ -z "$AUTH_COOKIE" ] || [ -z "$API_TOKEN" ]; then
+  if [[ -z "$WORKSPACE_URL" ]] || [[ -z "$AUTH_COOKIE" ]] || [[ -z "$API_TOKEN" ]]; then
     echo "WORKSPACE_URL or AUTH_COOKIE or API_TOKEN not set in .env file!"
     exit 1
   else echo 'Loaded environment variables from .env file'
   fi
 
-  WORKSPACE_NAME=$(echo "$WORKSPACE_URL" | sed 's/.*\/\/\([^\/]*\)\.slack\.com.*/\1/')
+  WORKSPACE_NAME=$(echo "$WORKSPACE_URL" | sed --regexp-extended 's:.*//([^/]*)\.slack\.com.*:\1:')
   
   BASE_WORKSPACE_DIR="$REPO_ROOT_DIR/workspaces"
   mkdir -p "$BASE_WORKSPACE_DIR"
@@ -70,7 +70,7 @@ EOF
 
   SUCCESS=$(echo "$RESPONSE" | jq '.ok')
 
-  if [ "$SUCCESS" == "true" ]; then
+  if [[ "$SUCCESS" == "true" ]]; then
     echo "Success!"
   else
     error_message=$(echo "$RESPONSE" | jq -r '.error')
